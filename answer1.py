@@ -61,12 +61,11 @@ def answer(n):
     min_period = lcm(min_period, period)
   return min_period
 
+
 if __name__ == '__main__':
-  for i in range(1, 250):
-    brute_force = answer_inefficient_brute_force(i)
+  for i in range(1, 500):
     lcm_method = answer(i)
-    if brute_force != lcm_method:
-      print(i, brute_force, lcm_method)
+    print(i, lcm_method)
 
 
 

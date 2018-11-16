@@ -1,7 +1,7 @@
 from sys import stdin
 
 class Robot:
-  headings = "NESW"
+  headings = "NWSE"
   heading_str2num = {l:i for i,l in enumerate(headings)}
   heading2movement = [(0,1), (-1,0), (0,-1), (1,0)]
   def __init__(self, board_size, loc, heading, moves):
