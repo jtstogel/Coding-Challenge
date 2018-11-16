@@ -1,10 +1,6 @@
 import collections
-
-"""
-Started at 10:32
-The front of the array is the top
-The back is the bottom
-"""
+from fractions import gcd
+# Started at 10:32
 
 
 """
@@ -28,16 +24,50 @@ def is_ordered_deck(arr):
   return all(map(lambda x: x[0]==x[1],
                  zip(arr, range(len(arr)))))
 
+"""
+Solves problem by simulating procedure... O(mn), where m is the answer
+"""
 def answer_inefficient_brute_force(n):
-  arr = list(range(n))
+  deck = list(range(n))
   n = 1
-  perform_procedure(arr)
-  while not is_ordered_deck(arr):
-    perform_procedure(arr)
+  perform_procedure(deck)
+  while not is_ordered_deck(deck):
+    perform_procedure(deck)
     n += 1
   return n
 
+def lcm(x, y):
+  return x * y // gcd(x, y)
+
+
+"""
+Solves problem by finding the period of each card's path then taking the lcm -> O(n)
+"""
+def answer(n):
+  min_period = 1
+  deck_mapping = list(range(n))
+  perform_procedure(deck_mapping)
+  # we will find the period of all cards now
+  unaccounted_for = set(range(n))
+  while unaccounted_for:
+    x = unaccounted_for.pop()
+    curr = deck_mapping[x]
+    period = 1
+    while curr != x:
+      # anything along our path has the same period as x, so we can remove dup computation
+      unaccounted_for.remove(curr)
+      curr = deck_mapping[curr]
+      period += 1
+    min_period = lcm(min_period, period)
+  return min_period
 
 if __name__ == '__main__':
-  for i in range(1, 10):
-    print(i, answer_inefficient_brute_force(i))
+  for i in range(1, 250):
+    brute_force = answer_inefficient_brute_force(i)
+    lcm_method = answer(i)
+    if brute_force != lcm_method:
+      print(i, brute_force, lcm_method)
+
+
+
+
