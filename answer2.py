@@ -1,3 +1,5 @@
+from sys import stdin
+
 class Robot:
   headings = "NESW"
   heading_str2num = {l:i for i,l in enumerate(headings)}
@@ -43,7 +45,24 @@ def simulate(robot):
   while robot.has_moves():
     robot.move()
 
+def parse_from_inp(inp):
+  board_size = inp.readline().strip().split()
+  board_size = (int(board_size[0]), int(board_size[1]))
+  robots = []
+  while 1:
+    l1 = inp.readline()
+    if not l1: # stdin is done
+      break
+    l1 = l1.strip().split()
+    moves = inp.readline().strip()
+    robot = Robot(board_size, (int(l1[0]), int(l1[1])), l1[2], moves)
+    robots.append(robot)
+  return board_size, robots
 
-robot1 = Robot((5, 5), (1, 2), 'N', 'LMLMLMLMM')
-simulate(robot1)
-print(robot1)
+
+if __name__ == '__main__':
+  board_size, robots = parse_from_inp(stdin)
+  for robot in robots:
+    simulate(robot)
+    print(robot)
+
